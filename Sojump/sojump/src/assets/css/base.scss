@@ -1,0 +1,5 @@
+/* dnd-kit 拖拽排序 */
+// 解决按快捷键Backspace删除组件时，组件外侧出现黑色轮廓的问题
+div[role="button"] {
+  outline: 0;
+}

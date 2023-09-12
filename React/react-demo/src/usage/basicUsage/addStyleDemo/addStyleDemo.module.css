@@ -1,0 +1,12 @@
+
+.add-style-demo {
+    color : green;
+    font-size : 20px;
+    border : solid 1px #ccc;
+    border-radius: 5px;
+    width: fit-content;
+    padding: 0 5px;
+}
+.danger {
+    color : red;
+}

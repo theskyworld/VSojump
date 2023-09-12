@@ -1,0 +1,16 @@
+.wrapper {
+    margin-bottom: 12px;
+    cursor: pointer;
+    background-color: #efefef;
+    border : solid 1px #fff;
+    padding:12px;
+    border-radius : 3px;
+
+    &:hover {
+        border-color : #d9d9d9;
+    }
+}
+
+.component {
+    pointer-events: none; // 屏蔽点击组件时的鼠标行为，不让组件可被点击，只用于被展示
+}
