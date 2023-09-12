@@ -4,6 +4,7 @@ import { Typography, Space, Form, Input, Button, Checkbox, message } from "antd"
 import React, { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_URL, MANAGE_LIST_URL, PASSWORD_KEY, REGISTER_URL, USERNAME_KEY } from "../assets/ts/constants";
+import getUserFromLocalStorage from "../assets/utils/getUserFromLocalStorage";
 import { setToken } from "../assets/utils/userToken";
 import { loginUserService } from "../service/user";
 import styles from "./Register.module.scss";
@@ -61,11 +62,6 @@ const Login: FC = () => {
     function deleteUserFromLocalStorage() {
         localStorage.removeItem(USERNAME_KEY);
     }
-
-    function getUserFromLocalStorage() {
-        return JSON.parse(localStorage.getItem(USERNAME_KEY)!);
-    }
-
 
     return (
         <div className={styles.container}>

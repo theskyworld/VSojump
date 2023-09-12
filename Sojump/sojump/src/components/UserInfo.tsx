@@ -1,21 +1,30 @@
 import { UserOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { Button } from "antd";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_URL } from "../assets/ts/constants";
+import getUserFromLocalStorage from "../assets/utils/getUserFromLocalStorage";
 import { removeToken } from "../assets/utils/userToken";
 import { getUserInfoService } from "../service/user";
 
+
+
 const UserInfo: FC = () => {
+    const username_ = (getUserFromLocalStorage() || { username: "", password: "" }).username;
+
     const [isLogined, setIsLogined] = useState(false);
-    const { data } = useRequest(getUserInfoService, {
+    const nav = useNavigate();
+
+
+    const { data } = useRequest(() => {
+        return getUserInfoService(username_)
+    }, {
         onSuccess() {
             setIsLogined(true);
         }
     });
     const { username } = data || {};
-    const nav = useNavigate();
 
     // 退出登录
     function logout() {
@@ -54,3 +63,4 @@ const UserInfo: FC = () => {
 
 
 export default UserInfo;
+

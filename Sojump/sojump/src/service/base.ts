@@ -23,7 +23,7 @@ const instance = axios.create({
 // request拦截器，每次请求前携带token
 instance.interceptors.request.use(
     config => {
-        config.headers["Authorization"] = `Bearer ${getToken()}` // JWT格式
+        config.headers["Authorization"] = `${getToken()}` // JWT格式
         return config;
     },
     error => Promise.reject(error)
