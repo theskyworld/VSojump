@@ -165,7 +165,6 @@ app.patch('/api/question/:id', async (req, resp) => {
             if (res.length) {
                 // 更新question_info
                 if (title && title !== undefined) {
-                    updateQuestionInfo()
                     const sql = `UPDATE question_info SET title = '${title}' WHERE (qid = '${id}');`;
                     await questionDatabase(sql);
                 };
