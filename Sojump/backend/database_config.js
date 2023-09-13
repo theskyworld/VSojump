@@ -11,6 +11,12 @@ module.exports = {
         user: "root",
         password: "5497237"
     },
+    // 操作sql_sojump_answer数据库
+    answerDB: {
+        database: 'sql_sojump_answer',
+        user: "root",
+        password: "5497237"
+    },
     server: {
         // mysql服务器端口
         port: 3306,

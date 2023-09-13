@@ -10,17 +10,29 @@ const port = 5003;
 const userinfoDatabase = database[0];
 // 操作sql_sojump_question数据库
 const questionDatabase = database[1];
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+// 操作sql_sojump_answer数据库
+const answerDatabase = database[2];
 
+// app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
+var bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(bodyParser.raw())
+app.use(bodyParser.text())
 
 // 统一校验token，在例如获取用户信息时使用
 app.use((req, resp, next) => {
     const location = req.url;
+    const id = location.split("/")[3];
     // 以下路由无需进行校验
     const whiteList = [
         '/api/user/login',
-        '/api/user/register'
+        '/api/user/register',
+        // 匹配获取要填写的问卷路由，不需要进行校验token
+        `/api/answer-question/${id}`,
+        // 提交答卷
+        '/api/answer',
     ]
     if (whiteList.includes(location)) {
         return next();
@@ -61,9 +73,13 @@ app.get("/", async (req, resp) => {
 
 // question
 
+
+
+
 // 获取单个问卷
 app.get('/api/question/:id', (req, resp) => {
     let { id } = req.params;
+    console.log("🚀 ~ file: app.js:67 ~ app.get ~ id:", id)
     // qid : 前端问卷的id
     // 对于isDeleted、isPublished、isStar，数据库中返回的值为'1'或者'0'，对应转换为true或者false之后返回给前端
     // 对于c.components，默认返回给前端的值应为[]
@@ -436,7 +452,76 @@ app.get("/api/user/info", async (req, resp) => {
 })
 
 
-// question
+// answer
+// 获取要进行填写的问卷
+app.get('/api/answer-question/:id', async (req, resp) => {
+    let { id } = req.params;
+    const sql = `SELECT 
+                    qid,
+                    title,
+                    description,
+                    js,
+                    css,
+                    isDeleted,
+                    isPublished,
+                    isStar,
+                    c.components
+                FROM question_info i
+                JOIN question_components c
+                USING(components_id)
+                WHERE qid = '${id}';`;
+    questionDatabase(sql).then(
+        res => {
+            if (!res.length) {
+                // 返回问卷未找到
+                resp.status(402).send({
+                    errno: 1,
+                    msg: "问卷未找到!"
+                })
+            } else {
+                const question = JSON.parse(JSON.stringify(res))[0];
+                question.isDeleted = Boolean(question.isDeleted);
+                question.isPublished = Boolean(question.isPublished);
+                if (!question.isPublished) {
+                    resp.status(200).send({
+                        errno: 4,
+                        msg: '当前问卷未发布！'
+                    })
+                }
+                question.isStar = Boolean(question.isStar);
+                question.components = JSON.parse(question.components ? question.components : []);
+                resp.status(200).send({
+                    errno: 0,
+                    data: {
+                        id: question.qid,
+                        ...question,
+                    }
+                })
+            }
+        }).catch(err => {
+            resp.status(402).send({
+                errno: 1,
+                msg: "问卷未找到!" + err
+            })
+        })
+})
+
+// 收集（提交）答卷
+app.post("/api/answer", async (req, resp) => {
+    const answerInfo = JSON.parse(req.body);
+    const { questionId, answerList } = answerInfo;
+    const sql = `INSERT INTO answer_info(question_id, answer_list)
+                VALUES ('${questionId}', JSON_ARRAY('${JSON.stringify(answerList)}'))`;
+    ;
+    answerDatabase(sql).then(
+        res => {
+            resp.send({
+                errno: 0,
+            })
+        }
+    )
+
+})
 
 
 
