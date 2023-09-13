@@ -524,6 +524,51 @@ app.post("/api/answer", async (req, resp) => {
 })
 
 
+// stat 问卷统计
+// 获取当前问卷的所有答卷
+app.get("/api/stat/:questionId", async (req, resp) => {
+    const { questionId } = req.params;
+    let { page, pageSize: perPageSize } = req.query;
+    page = page - 0;
+    perPageSize = perPageSize - 0;
+    const sql = `SELECT * FROM answer_info WHERE question_id = '${questionId}'`;
+
+    answerDatabase(sql).then(
+        res => {
+            if (res.length) {
+                const answerInfos = JSON.parse(JSON.stringify(res));
+                const startIndex = page === 1 ? 0 : perPageSize * (page - 1);
+                const resAnswerInfos = answerInfos.slice(startIndex, startIndex + perPageSize);
+
+                const list = [];
+                resAnswerInfos.forEach(answerInfo => {
+                    answerInfo.answer_list = JSON.parse(JSON.parse(JSON.parse(JSON.stringify(answerInfo)).answer_list)[0]);
+
+                    const components = {};
+                    answerInfo.answer_list.forEach((i, index) => {
+                        components[i.componentId] = i.value;
+                    })
+
+                    list.push({
+                        _id: answerInfo.id + "",
+                        ...components
+                    });
+                })
+
+
+                resp.send({
+                    errno: 0,
+                    data: {
+                        list: list,
+                        total: answerInfos.length
+                    }
+                })
+            }
+        }
+    );
+})
+
+
 
 
 
