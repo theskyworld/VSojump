@@ -31,7 +31,8 @@ const UserInfo: FC = () => {
     function logout() {
         // 清除本地存储的token
         removeToken();
-        nav(LOGIN_URL)
+        nav(LOGIN_URL);
+        setIsLogined(false);
     }
 
     // 展示用户信息的组件
