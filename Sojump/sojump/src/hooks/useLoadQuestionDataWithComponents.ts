@@ -23,7 +23,7 @@ function useLoadQuestionDataWithComponents() {
 
     useEffect(() => {
         if (!data) return;
-        const { title = "",desc = "", js = "", css = "", isPublished = false, components = [] } = data;
+        const { title = "",description = "", js = "", css = "", isPublished = false, components = [] } = data;
 
         // 默认选中第一个组件
         let selectedId = "";
@@ -34,7 +34,7 @@ function useLoadQuestionDataWithComponents() {
         dispatch(initComponents({ components, selectedId, copiedComponent: null }));
         
         // 将获取到的pageSetting存储到redux中，初始化右侧栏中的页面设置
-        dispatch(initPageSetting({title, js, css, isPublished}))
+        dispatch(initPageSetting({title, js,description, css, isPublished}))
     }, [data]);
 
     useEffect(() => {

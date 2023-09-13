@@ -14,7 +14,7 @@ module.exports = [
                 data: {
                     id: Random.id(),
                     title: `问卷标题-${Random.integer()}`,
-                    desc: "问卷描述...",
+                    description: "问卷描述...",
                     js: "",
                     css: "",
                     isDeleted : false,

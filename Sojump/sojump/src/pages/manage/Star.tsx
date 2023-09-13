@@ -14,13 +14,15 @@ const Star: FC = () => {
     const { Title } = Typography;
     useTitle("V问卷-星标问卷");
 
-    const { data, loading, error } = useSearchQuestionList({ isStar: true });
+    const { data, loading, error, refresh } = useSearchQuestionList({ isStar: true });
     const { list, total } = data || {};
     useEffect(() => {
         if (list) {
             setIsLoading(loading);
             setQuestionList(list);
         }
+        // 刷新页面
+        refresh();
     }, [list])
 
     return (

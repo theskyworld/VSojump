@@ -9,7 +9,6 @@ const { TextArea } = Input
 
 const PageSetting: FC = () => {
     const pageSetting = useGetPageSetting()
-    // const { title, desc, js, css } = PageSetting
     const [form] = Form.useForm()
     const dispatch = useDispatch()
 
@@ -32,7 +31,7 @@ const PageSetting: FC = () => {
             <Form.Item label="问卷标题" name="title" rules={[{ required: true, message: '请输入标题' }]}>
                 <Input placeholder="请输入标题" />
             </Form.Item>
-            <Form.Item label="问卷描述" name="desc">
+            <Form.Item label="问卷描述" name="description">
                 <TextArea placeholder="问卷描述..." />
             </Form.Item>
             <Form.Item label="样式代码" name="css">

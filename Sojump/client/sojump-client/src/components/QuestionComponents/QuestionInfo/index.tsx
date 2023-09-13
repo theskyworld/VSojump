@@ -2,13 +2,13 @@ import React, { FC } from 'react'
 
 interface QuestionInfoProps{
     title: string
-    desc?: string
+    description?: string
 }
 
-const QuestionInfo: FC<QuestionInfoProps> = ({ title, desc }) => {
+const QuestionInfo: FC<QuestionInfoProps> = ({ title, description }) => {
     return <div style={{ textAlign: 'center' }}>
         <h1>{title}</h1>
-        <p>{desc}</p>
+        <p>{description}</p>
     </div>
 }
 

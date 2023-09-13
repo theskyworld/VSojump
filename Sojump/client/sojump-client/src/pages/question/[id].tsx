@@ -11,7 +11,7 @@ interface QuestionProps{
     data?: {
         id: string
         title: string
-        desc?: string
+        description?: string
         js?: string
         css?: string
         isPublished: boolean
@@ -32,11 +32,11 @@ export default function Question(props: QuestionProps) {
         </PageWrapper>
     }
 
-    const { id, title = '', desc = '', isDeleted, isPublished, components = [] } = data || {}
+    const { id, title = '', description = '', isDeleted, isPublished, components = [] } = data || {}
 
     // 已经被删除的，提示错误
     if (isDeleted) {
-        return <PageWrapper title={title} desc={desc}>
+        return <PageWrapper title={title} description={description}>
             <h1>{title}</h1>
             <p>该问卷已经被删除</p>
         </PageWrapper>
@@ -44,7 +44,7 @@ export default function Question(props: QuestionProps) {
 
     // 尚未发布的，提示错误
     if (!isPublished) {
-        return <PageWrapper title={title} desc={desc}>
+        return <PageWrapper title={title} description={description}>
             <h1>{title}</h1>
             <p>该问卷尚未发布</p>
         </PageWrapper>
@@ -60,7 +60,7 @@ export default function Question(props: QuestionProps) {
         })}
     </>
 
-    return <PageWrapper title={title} desc={desc}>
+    return <PageWrapper title={title} description={description}>
         <form method='post' action="/api/answer">
             <input type="hidden" name="questionId" value={id} />
 

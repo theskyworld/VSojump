@@ -3,7 +3,7 @@ import produce from 'immer'
 
 export type PageSettingReducerState = {
   title: string // 问卷标题
-  desc?: string // 问卷描述
+  description?: string // 问卷描述
   js?: string  // js代码
   css?: string  // css代码  
   isPublished?: boolean
@@ -11,7 +11,7 @@ export type PageSettingReducerState = {
 
 const INIT_STATE: PageSettingReducerState = {
   title: '',
-  desc: '',
+  description: '',
   js: '',
   css: '',
 }
