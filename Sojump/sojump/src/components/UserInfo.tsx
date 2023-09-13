@@ -5,7 +5,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_URL } from "../assets/ts/constants";
 import getUserFromLocalStorage from "../assets/utils/getUserFromLocalStorage";
-import { removeToken } from "../assets/utils/userToken";
+import { removeToken, getToken } from "../assets/utils/userToken";
 import { getUserInfoService } from "../service/user";
 
 
@@ -18,11 +18,12 @@ const UserInfo: FC = () => {
 
 
     const { data } = useRequest(() => {
-        return getUserInfoService(username_)
-    }, {
-        onSuccess() {
+        // 添加判断条件，在首页中只有在登录之后才进行用户信息后端数据的获取
+        if (getToken()) {
             setIsLogined(true);
-        }
+            return getUserInfoService(username_);
+        };
+        return Promise.resolve({});
     });
     const { username } = data || {};
 
