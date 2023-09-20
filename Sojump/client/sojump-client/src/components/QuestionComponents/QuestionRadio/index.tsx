@@ -16,12 +16,13 @@ interface QuestionRadioProps{
 
 const QuestionRadio: FC<QuestionRadioProps> = ({ fe_id, props }) => {
     const { title, options = [], value, isVertical } = props
+    // console.log("🚀 ~ file: index.tsx:19 ~ options:", options)
 
     return <>
         <p>{title}</p>
         <ul className={styles.list}>
             {options.map(opt => {
-                const { value: val, text } = opt
+                const { text: val, text } = opt
 
                 // 判断竖向、横向
                 let liClassName = ''
@@ -30,7 +31,8 @@ const QuestionRadio: FC<QuestionRadioProps> = ({ fe_id, props }) => {
 
                 return <li key={val} className={liClassName}>
                     <label>
-                        <input type="radio" name={fe_id} value={val} defaultChecked={val === value} />
+                        {/* 添加radio标记，用于在后端对该组件的答案值进行数据统计 */}
+                        <input type="radio" name={fe_id + 'radio'} value={val} defaultChecked={val === value} />
                         {text}
                     </label>
                 </li>

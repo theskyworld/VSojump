@@ -22,31 +22,33 @@ const QuestionCheckbox: FC<QuestionCheckboxProps> = ({ fe_id, props }) => {
     // 初始化时，判断默认选中
     useEffect(() => {
         list.forEach(item => {
-            const { value, checked } = item
+            const { text, checked } = item
             if (checked) {
-                setSelectedValues(selectedValues => selectedValues.concat(value))
+                setSelectedValues(selectedValues => selectedValues.concat(text))
             }
         })
     }, [list])
 
     // 切换选中
-    function toggleChecked(value: string) {
-        if (selectedValues.includes(value)) {
+    function toggleChecked(text: string) {
+        if (selectedValues.includes(text)) {
             // 已经被选中了，则取消选择
-            setSelectedValues(selectedValues => selectedValues.filter(v => v !== value))
+            setSelectedValues(selectedValues => selectedValues.filter(v => v !== text))
         } else {
             // 未被选中，则增加选择
-            setSelectedValues(selectedValues.concat(value))
+            setSelectedValues(selectedValues.concat(text))
         }
     }
 
     return <>
         <p>{title}</p>
-
-        <input type="hidden" name={fe_id} value={selectedValues.toString()} />
+        
+        {/* 添加statable标记，用于在后端对该组件的答案值进行数据统计 */}
+        <input type="hidden"  name={fe_id + 'checkbox'} value={selectedValues.toString()} />
 
         <ul className={styles.list}>
             {list.map(item => {
+
                 const { value, text, checked } = item
 
                 let className
@@ -57,8 +59,8 @@ const QuestionCheckbox: FC<QuestionCheckboxProps> = ({ fe_id, props }) => {
                     <label>
                         <input
                             type="checkbox"
-                            checked={selectedValues.includes(value)}
-                            onChange={() => toggleChecked(value)}
+                            checked={selectedValues.includes(text)}
+                            onChange={() => toggleChecked(text)}
                         />
                         {text}
                     </label>

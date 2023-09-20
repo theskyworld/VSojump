@@ -22,6 +22,7 @@ interface QuestionProps{
 }
 
 export default function Question(props: QuestionProps) {
+                                                                                                                                                                                                                                                                                                                                   // console.log("🚀 ~ file: [id].tsx:25 ~ Question ~ props:", props)
     const { errno, data, msg = '' } = props
 
     // 数据错误
@@ -53,6 +54,8 @@ export default function Question(props: QuestionProps) {
     // 遍历组件
     const ComponentListElem = <>
         {components.map(c => {
+            // console.log("🚀 ~ file: [id].tsx:61 ~ Question ~ c:", c)
+
             const ComponentElem = getComponent(c)
             return <div key={c.fe_id} className={styles.componentWrapper}>
                 {ComponentElem}

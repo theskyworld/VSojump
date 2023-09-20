@@ -38,6 +38,7 @@ const ChartStat: FC<ChartStatProps> = (props: ChartStatProps) => {
         // 组件的统计图表组件动态来自于该组件的例如QuestionRadioStat组件，只有QuestionRadio和QuestionCheckbox组件存在统计图表组件
         const { StatComponent } = getComponentConfigByType(selectedComponentType) || {}
         if (!StatComponent ) return <div>该组件无统计图表</div>
+        // console.log("🚀 ~ file: index.tsx:20 ~ stat:", stat)
 
         return <StatComponent stat={stat} />
     }

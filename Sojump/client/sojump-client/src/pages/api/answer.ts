@@ -22,7 +22,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("🚀 ~ file: answer.ts:25 ~ req:", req.body)
+  // console.log("🚀 ~ file: answer.ts:25 ~ req:", req.body)
   if (req.method !== 'POST') {
     // 不是 post 则返回错误
     res.status(200).json({ errno: -1, msg: 'Method 错误' })
@@ -31,7 +31,7 @@ export default async function handler(
   // 获取并格式化表单数据
   const answerInfo = genAnswerInfo(req.body)
 
-  console.log('answerInfo', answerInfo)
+  // console.log('answerInfo', answerInfo)
 
   try {
     // 提交到服务端 Mock

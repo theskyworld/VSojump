@@ -12,7 +12,7 @@ const userinfoDatabase = (sql, sqlParams) => {
             if (err) {
                 reject(err);
             } else {
-                console.log(`database : ${userInfoConfig.database} connected succeed!`);
+                // console.log(`database : ${userInfoConfig.database} connected succeed!`);
                 connection.query(sql, sqlParams, (err, results) => {
                     if (err) {
                         reject(err);
@@ -37,7 +37,7 @@ const questionDatabase = (sql, sqlParams) => {
             if (err) {
                 reject(err);
             } else {
-                console.log(`database : ${questionConfig.database} connected succeed!`);
+                // console.log(`database : ${questionConfig.database} connected succeed!`);
                 connection.query(sql, sqlParams, (err, results) => {
                     if (err) {
                         reject(err);
@@ -61,7 +61,7 @@ const answerDatabase = (sql, sqlParams) => {
             if (err) {
                 reject(err);
             } else {
-                console.log(`database : ${answerConfig.database} connected succeed!`);
+                // console.log(`database : ${answerConfig.database} connected succeed!`);
                 connection.query(sql, sqlParams, (err, results) => {
                     if (err) {
                         reject(err);
