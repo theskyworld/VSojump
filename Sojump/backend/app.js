@@ -113,9 +113,7 @@ app.get("/api/question/:id", (req, resp) => {
         question.isStar = Boolean(question.isStar);
         question.components = JSON.parse(
           question.components
-            ? JSON.stringify(question.components)
-            : JSON.stringify([])
-        );
+        ) || [];
         resp.send({
           errno: 0,
           data: {
