@@ -54,7 +54,7 @@ app.use((req, resp, next) => {
         .catch(err => {
           // 登录超时
           if (err.message === `jwt expired`) {
-            return resp.status(401).send({
+            return resp.send({
               errno: 4,
               msg: "用户登录超时!",
             });
@@ -114,7 +114,7 @@ app.get("/api/question/:id", (req, resp) => {
         question.components = JSON.parse(
           question.components ? question.components : []
         );
-        resp.status(200).send({
+        resp.send({
           errno: 0,
           data: {
             id: question.qid,
@@ -126,7 +126,7 @@ app.get("/api/question/:id", (req, resp) => {
     .catch(err => {
       resp.send({
         errno: 1,
-        msg: "问卷未找到!" + err,
+        msg: "问卷未找到!",
       });
     });
 });
@@ -150,7 +150,7 @@ app.post("/api/question", async (req, resp) => {
         await questionDatabase(insertQidSql);
         await questionDatabase(insertComponentsIdSql);
         // 向前端返回qid
-        resp.status(200).send({
+        resp.send({
           errno: 0,
           data: {
             id: qid,
@@ -166,7 +166,7 @@ app.post("/api/question", async (req, resp) => {
     .catch(err => {
       resp.send({
         errno: 3,
-        msg: "创建问卷失败!" + err,
+        msg: "创建问卷失败!",
       });
     });
 });
@@ -226,7 +226,7 @@ app.patch("/api/question/:id", async (req, resp) => {
                             `;
         await questionDatabase(sql2);
         // }
-        resp.status(200).send({
+        resp.send({
           errno: 0,
         });
       } else {
@@ -239,7 +239,7 @@ app.patch("/api/question/:id", async (req, resp) => {
     .catch(err => {
       resp.send({
         errno: 1,
-        msg: "修改问卷失败!" + err,
+        msg: "修改问卷失败!",
       });
     });
 });
@@ -308,7 +308,7 @@ app.get("/api/question-list", async (req, resp) => {
             }
           });
         }
-        resp.status(200).send({
+        resp.send({
           errno: 0,
           data: {
             list: resComponentList,
@@ -328,7 +328,7 @@ app.get("/api/question-list", async (req, resp) => {
     .catch(err => {
       resp.send({
         errno: 1,
-        msg: "获取问卷列表失败!" + err,
+        msg: "获取问卷列表失败!",
       });
     });
 });
@@ -337,7 +337,7 @@ app.get("/api/question-list", async (req, resp) => {
 // 后端只需返回复制后新问卷的id
 app.post("/api/question/duplicate/:id", (req, resp) => {
   const qid = Math.random().toString(36).substr(2, 16);
-  resp.status(200).send({
+  resp.send({
     errno: 0,
     data: {
       id: qid,
@@ -372,7 +372,7 @@ app.delete("/api/question", async (req, resp) => {
     }
   });
 
-  resp.status(200).send({
+  resp.send({
     errno: 0,
   });
 });
@@ -390,7 +390,7 @@ app.post("/api/user/login", async (req, resp) => {
       const { upassword } = userinfo;
       if (upassword === params.password) {
         setToken(params.username).then(token => {
-          resp.status(200).send({
+          resp.send({
             errno: 0,
             data: {
               token,
@@ -427,7 +427,7 @@ app.post("/api/user/register", async (req, resp) => {
       resp.end();
     } else {
       userinfoDatabase(sql_add_user).then(res => {
-        resp.status(200).send({
+        resp.send({
           errno: 0,
         });
       });
@@ -441,15 +441,15 @@ app.get("/api/user/info", async (req, resp) => {
   const sql = `SELECT * FROM userinfo WHERE uname = '${username}'`;
   userinfoDatabase(sql, username).then(res => {
     if (res.length) {
-      resp.status(200).send({
+      resp.send({
         errno: 0,
         data: res[0],
       });
     } else {
-      resp.status(801, "username is not found", {
-        "content-type": "text/plain",
-      });
-      resp.end();
+      resp.send({
+        errno: 1,
+        msg : '用户未注册!'
+      })
     }
   });
 });
@@ -485,7 +485,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
         question.isDeleted = Boolean(question.isDeleted);
         question.isPublished = Boolean(question.isPublished);
         if (!question.isPublished) {
-          resp.status(200).send({
+          resp.send({
             errno: 4,
             msg: "当前问卷未发布！",
           });
@@ -494,7 +494,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
         question.components = JSON.parse(
           question.components ? question.components : []
         );
-        resp.status(200).send({
+        resp.send({
           errno: 0,
           data: {
             id: question.qid,
@@ -506,7 +506,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
     .catch(err => {
       resp.send({
         errno: 1,
-        msg: "问卷未找到!" + err,
+        msg: "问卷未找到!",
       });
     });
 });
