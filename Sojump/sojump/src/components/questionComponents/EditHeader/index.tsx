@@ -31,22 +31,22 @@ const EditHeader: FC = () => {
             dispatch(changePageTitle(newTitle))
         }
 
-        if (editState) {
-            return (
-                <Input
-                    autoFocus
-                    value={title}
-                    onChange={handleChange}
-                    onPressEnter={() => SetEditState(false)}
-                    onBlur={() => SetEditState(false)}
-                />
-            )
-        }
+        // if (editState) {
+        //     return (
+        //         <Input
+        //             autoFocus
+        //             value={title}
+        //             onChange={handleChange}
+        //             onPressEnter={() => SetEditState(false)}
+        //             onBlur={() => SetEditState(false)}
+        //         />
+        //     )
+        // }
 
         return (
             <Space align="baseline">
                 <Title>{title}</Title>
-                <Button icon={<EditOutlined />} type="text" onClick={() => {SetEditState(true) }} />
+                {/* <Button icon={<EditOutlined />} type="text" onClick={() => {SetEditState(true) }} /> */}
             </Space>
         )
     }
