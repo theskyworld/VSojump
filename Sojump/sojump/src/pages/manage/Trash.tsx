@@ -7,6 +7,7 @@ import { Question } from "./List";
 import useSearchQuestionList from "../../hooks/useSearchQuestionList";
 import CommonPagination from "../../components/CommonPagination";
 import { deleteQuestionService, updateQuestionService } from "../../service/question";
+import Search from "../../components/Search";
 
 
 const Trash: FC = () => {
@@ -107,7 +108,9 @@ const Trash: FC = () => {
                 <div className={styles.left}>
                     <Title level={3}>回收站</Title>
                 </div>
-                <div className={styles.right}>搜索框</div>
+                <div className={styles.right}>
+                    <Search></Search>
+                </div>
             </div>
             <div className={styles.content}>
                 {

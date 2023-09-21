@@ -6,6 +6,7 @@ import { useTitle } from "ahooks";
 import { Question } from "./List";
 import useSearchQuestionList from "../../hooks/useSearchQuestionList";
 import CommonPagination from "../../components/CommonPagination";
+import Search from "../../components/Search";
 
 
 const Star: FC = () => {
@@ -31,7 +32,9 @@ const Star: FC = () => {
                 <div className={styles.left}>
                     <Title level={3}>星标问卷</Title>
                 </div>
-                <div className={styles.rightr}>搜索</div>
+                <div className={styles.right}>
+                    <Search></Search>
+                </div>
             </div>
             <div className={styles.content}>
                 {

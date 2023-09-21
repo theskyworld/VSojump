@@ -326,10 +326,10 @@ app.get("/api/question-list", async (req, resp) => {
       }
     })
     .catch(err => {
-      resp.send({
-        errno: 1,
-        msg: "获取问卷列表失败!",
-      });
+      // resp.send({
+      //   errno: 1,
+      //   msg: "获取问卷列表失败!",
+      // });
     });
 });
 
