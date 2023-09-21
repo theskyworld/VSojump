@@ -17,7 +17,7 @@ const QuestionRadioStat: FC<QuestionRadioStatProps> = ({ stat = [] }) => {
     }, [stat])
 
     return (
-        <div style={{ width: '300px', height: '400px' }}>
+        <div style={{ width: '410px', height: '400px', margin: '0 auto' }}>
             <ResponsiveContainer width="100%" height="100%">
                 {/* 使用饼状图 */}
                 <PieChart>

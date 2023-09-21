@@ -15,7 +15,6 @@ const Logo: FC = () => {
                 <Space>
                     {/* Title的level属性可以指定级别，默认值为1，等价于h1 */}
                     <Title>
-                        <FormOutlined></FormOutlined>
                     </Title>
                     <Title>V问卷</Title>
                 </Space>
