@@ -14,10 +14,15 @@ import { changePageTitle } from "../../../store/PageSettingReducer";
 import styles from "./EditHeaderLayout.module.scss";
 import EditToolbar from "./EditToolbar";
 
+interface EditHeaderProps {
+    newId: string;
+}
 
-const EditHeader: FC = () => {
+
+const EditHeader: FC<EditHeaderProps> = ({ newId }: EditHeaderProps) => {
     const nav = useNavigate();
     const { Title } = Typography;
+    console.log("🚀 ~ file: index.tsx:26 ~ newId:", newId)
 
     // 显示和修改标题组件
     const TitleCom: FC = () => {
@@ -62,7 +67,13 @@ const EditHeader: FC = () => {
             async () => {
                 if (!id) return
                 // 此处保存的实质为将对问卷进行修改后的信息调用以下请求方法同步到后端
-                await updateQuestionService(id, { ...pageInfo, components })
+
+                // 如果存在newId（复制后新问卷的id），则表示以上内容需要更新到新问卷中，使用newId进行提交
+                if (newId) {
+                    await updateQuestionService(newId, { ...pageInfo, components })
+                } else {
+                    await updateQuestionService(id, { ...pageInfo, components })
+                }
             },
             { manual: true }
         )
@@ -131,13 +142,13 @@ const EditHeader: FC = () => {
                 <div className={styles.left}>
                     <Space>
                         <Button type="link" icon={<LeftOutlined />} onClick={() => { nav(-1) }}>返回</Button>
-                        <TitleCom/>
+                        <TitleCom />
                     </Space>
                 </div>
-                <div className={styles.main}><EditToolbar/></div>
+                <div className={styles.main}><EditToolbar /></div>
                 <div className={styles.right}>
                     <Space>
-                        <SaveButtonCom/>
+                        <SaveButtonCom />
                         <PublishButtonCom />
                     </Space>
                 </div>

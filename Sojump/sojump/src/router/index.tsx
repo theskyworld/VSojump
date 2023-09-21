@@ -73,7 +73,8 @@ const router = createBrowserRouter([
         element: <QuestionLayout></QuestionLayout>,
         children: [
             {
-                path: `${QUESTION_EDIT_URL.slice(1 + QUESTION_URL.length)}/:id`,
+                // newId表示复制问卷之后新问卷的id
+                path: `${QUESTION_EDIT_URL.slice(1 + QUESTION_URL.length)}/:id/:newId?`,
                 element: <EditIndex></EditIndex>
             },
             {

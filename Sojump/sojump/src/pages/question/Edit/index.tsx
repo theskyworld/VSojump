@@ -9,9 +9,10 @@ import RightPanel from "../../../components/questionComponents/RightPanel";
 import EditHeader from "../../../components/questionComponents/EditHeader";
 import useGetPageSetting from "../../../hooks/useGetPageSetting";
 import { useTitle } from "ahooks";
+import { useParams } from "react-router-dom";
 
-const EditIndex: FC = () => {
-
+const EditIndex: FC = () => {   
+    const { newId = '' } = useParams();
     const { loading} = useLoadQuestionDataWithComponents();
     const dispatch = useDispatch();
     // 修改页面标题
@@ -25,7 +26,7 @@ const EditIndex: FC = () => {
     return (
         <>
             <div className={styles.container}>
-                <EditHeader/>
+                <EditHeader newId={newId } />
                 <div className={styles['content-wrapper']}>
                     <div className={styles.content}>
                         <div className={styles.left}><LeftPanel/></div>

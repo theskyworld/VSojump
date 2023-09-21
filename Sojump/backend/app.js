@@ -334,15 +334,42 @@ app.get("/api/question-list", async (req, resp) => {
 });
 
 // 复制问卷
-// 后端只需返回复制后新问卷的id
+// 后端在数据库中新建一个原问卷的复制版本后，返回新问卷的id
 app.post("/api/question/duplicate/:id", (req, resp) => {
   const qid = Math.random().toString(36).substr(2, 16);
-  resp.send({
-    errno: 0,
-    data: {
-      id: qid,
-    },
-  });
+  const curQidIsExistSql = `SELECT * FROM question_info WHERE qid = '${qid}'`;
+  questionDatabase(curQidIsExistSql)
+    .then(async res => {
+      // 确保当前qid在数据库中不存在
+      if (!res.length) {
+        // 向数据库中添加qid和对应的components_id
+        const components_id = Math.random().toString(36).substr(2, 16);
+        const insertQidSql = `INSERT INTO question_info(qid, components_id)
+        VALUES('${qid}', '${components_id}');`;
+        const insertComponentsIdSql = `INSERT INTO question_components(components_id)
+        VALUES('${components_id}');`;
+        await questionDatabase(insertQidSql);
+        await questionDatabase(insertComponentsIdSql);
+        // 向前端返回qid
+        resp.send({
+          errno: 0,
+          data: {
+            id: qid,
+          },
+        });
+      } else {
+        resp.send({
+          errno: 2,
+          msg: "不能重复创建问卷!",
+        });
+      }
+    })
+    .catch(err => {
+      resp.send({
+        errno: 3,
+        msg: "复制问卷失败!",
+      });
+    });
 });
 
 // 批量彻底删除问卷

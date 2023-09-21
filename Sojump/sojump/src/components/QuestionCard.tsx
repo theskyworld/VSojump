@@ -49,7 +49,8 @@ const QuestionCard: FC<QuestionCardProps> = (props: QuestionCardProps) => {
             manual: true,
             onSuccess(result) {
                 message.success("复制成功");
-                nav(`${QUESTION_EDIT_URL}/${result.id}`);
+                const newId = result.id;
+                nav(`${QUESTION_EDIT_URL}/${id}/${newId}`);
             }
         }
     )
