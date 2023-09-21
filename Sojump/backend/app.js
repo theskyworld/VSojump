@@ -61,7 +61,7 @@ app.use((req, resp, next) => {
           } else {
             return resp.send({
               errno: 4,
-              msg: "用户登录超时!",
+              msg: "用户未登录!",
             });
           }
         });
