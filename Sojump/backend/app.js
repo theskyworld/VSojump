@@ -40,7 +40,10 @@ app.use((req, resp, next) => {
     const authorization = req.headers["authorization"];
     // 用户未登录
     if (!authorization) {
-      return resp.status(402).send("用户未登录!");
+      return resp.send({
+        errno: 4,
+        msg: "用户未登录!",
+      });
     } else {
       // 校验token
       verifyToken(authorization)
@@ -51,9 +54,15 @@ app.use((req, resp, next) => {
         .catch(err => {
           // 登录超时
           if (err.message === `jwt expired`) {
-            return resp.status(401).send("用户登录超时!");
+            return resp.status(401).send({
+              errno: 4,
+              msg: "用户登录超时!",
+            });
           } else {
-            return resp.status(402).send("用户未登录!");
+            return resp.send({
+              errno: 4,
+              msg: "用户登录超时!",
+            });
           }
         });
     }
@@ -93,7 +102,7 @@ app.get("/api/question/:id", (req, resp) => {
     .then(res => {
       if (!res.length) {
         // 返回问卷未找到
-        resp.status(402).send({
+        resp.send({
           errno: 1,
           msg: "问卷未找到!",
         });
@@ -115,7 +124,7 @@ app.get("/api/question/:id", (req, resp) => {
       }
     })
     .catch(err => {
-      resp.status(402).send({
+      resp.send({
         errno: 1,
         msg: "问卷未找到!" + err,
       });
@@ -467,7 +476,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
     .then(res => {
       if (!res.length) {
         // 返回问卷未找到
-        resp.status(402).send({
+        resp.send({
           errno: 1,
           msg: "问卷未找到!",
         });
@@ -495,7 +504,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
       }
     })
     .catch(err => {
-      resp.status(402).send({
+      resp.send({
         errno: 1,
         msg: "问卷未找到!" + err,
       });

@@ -48,7 +48,6 @@ module.exports = {
     proxy: {
       // 对于前端所有的/api请求都转发到http://localhost:5003
       "/api" : "http://localhost:5003"
-    //   "/api": "http://8.137.34.128:5005",
     },
   },
 };
