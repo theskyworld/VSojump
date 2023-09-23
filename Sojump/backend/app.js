@@ -389,8 +389,10 @@ app.delete("/api/question", async (req, resp) => {
         }
       });
       const deleteFromQuestionComponentsSql = `DELETE FROM question_components WHERE components_id = '${components_id}'`;
+      const deleteFromAnswerInfoSql = `DELETE FROM answer_info WHERE qid = '${id}'`;
       questionDatabase(deleteFromQuestionInfoSql);
       questionDatabase(deleteFromQuestionComponentsSql);
+      questionDatabase(deleteFromAnswerInfoSql);
     } catch {
       resp.send({
         erron: 3,
