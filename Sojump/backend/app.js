@@ -443,19 +443,15 @@ app.post("/api/user/login", async (req, resp) => {
 
 // 用户注册
 app.post("/api/user/register", async (req, resp) => {
-  // 用户注册后，返回当前用户的uid，用于以后在用户登录、获取用户信息、获取用户所有问卷、收藏问卷、已删除的问卷时进行用户的鉴定
-  const uid = Math.random().toString(36).substr(2, 16);
   const params = req.body;
   const sql_find_user = `SELECT id FROM userinfo WHERE uname = '${params.username}'`;
   const sql_add_user = `INSERT INTO userinfo (uname,upassword) VALUES ('${params.username}','${params.password}')`;
-  // 在数据库内存储uid
-  const sql_set_uid = `UPDATE userinfo SET uid = '${uid}' WHERE uname = '${params.username}'`;
 
   userinfoDatabase(sql_find_user, params.username).then(async res => {
     if (res.length) {
       resp.status(507).send({
         errno: 1,
-        msg: "用户已注册!",
+        msg: "当前用户已注册,请立即登录或更改用户名注册!",
       })
     } else {
       await userinfoDatabase(sql_add_user);
