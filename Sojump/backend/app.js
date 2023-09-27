@@ -455,15 +455,17 @@ app.post("/api/user/register", async (req, resp) => {
       })
     } else {
       await userinfoDatabase(sql_add_user);
-      await userinfoDatabase(sql_set_uid);
       resp.status(200).send({
         errno: 0,
-        data: {
-          uid,
-        },
       });
     }
-  });
+  }).catch(err => {
+    console.log("🚀 ~ file: app.js:468 ~ userinfoDatabase ~ err:", err)
+    resp.status(507).send({
+      errno: 1,
+      msg: "呃~ o(*￣▽￣*)o...出错啦!",
+    });
+  })
 });
 
 // 获取用户信息
