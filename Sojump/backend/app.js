@@ -132,6 +132,8 @@ app.get("/api/question/:id", (req, resp) => {
 // 创建问卷
 // 对应创建新的qid和components_id并添加至数据库中之后将qid向前端返回
 app.post("/api/question", async (req, resp) => {
+  // 创建问卷时携带用户username，为当前用户创建问卷
+  const { username } = req.body;
   // 创建新的qid
   const qid = Math.random().toString(36).substr(2, 16);
   const curQidIsExistSql = `SELECT * FROM question_info WHERE qid = '${qid}'`;
@@ -141,8 +143,8 @@ app.post("/api/question", async (req, resp) => {
       if (!res.length) {
         // 向数据库中添加qid和对应的components_id
         const components_id = Math.random().toString(36).substr(2, 16);
-        const insertQidSql = `INSERT INTO question_info(qid, components_id)
-        VALUES('${qid}', '${components_id}');`;
+        const insertQidSql = `INSERT INTO question_info(uname, qid, components_id)
+        VALUES('${username}', '${qid}', '${components_id}');`;
         const insertComponentsIdSql = `INSERT INTO question_components(components_id)
         VALUES('${components_id}');`;
         await questionDatabase(insertQidSql);
@@ -162,6 +164,7 @@ app.post("/api/question", async (req, resp) => {
       }
     })
     .catch(err => {
+      console.log("🚀 ~ file: app.js:167 ~ app.post ~ err:", err)
       resp.status(507).send({
         errno: 3,
         msg: "创建问卷失败!",

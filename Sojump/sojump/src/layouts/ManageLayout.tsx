@@ -4,13 +4,15 @@ import styles from "./ManageLayout.module.scss";
 import { Button, Space, Divider, message } from 'antd';
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from "@ant-design/icons"
 import { createQuestionService, } from "../service/question";
-import { QUESTION_EDIT_URL } from "../assets/ts/constants";
+import { QUESTION_EDIT_URL, USERNAME_KEY } from "../assets/ts/constants";
 import { useRequest } from "ahooks";
 
 const ManageLayout: FC = () => {
     const nav = useNavigate();
     // 获取跳转不同页面对应的路由片段
     const { pathname } = useLocation();
+
+    const username = JSON.parse(localStorage.getItem(USERNAME_KEY)!).username;
 
     // run: handleCreateQuestionClick 表示手动触发handleCreateQuestionClick时才开始进行useRequest函数的执行
     const { loading, error, run: handleCreateQuestionClick } = useRequest(createQuestionService, {
@@ -26,7 +28,7 @@ const ManageLayout: FC = () => {
             <div className={styles["left"]}>
                 {/* <p>ManageLayout left</p> */}
                 <Space wrap>
-                    <Button type="default" size="small" icon={<PlusOutlined />} onClick={handleCreateQuestionClick} disabled={loading}>新建问卷</Button>
+                    <Button type="default" size="small" icon={<PlusOutlined />} onClick={() => { handleCreateQuestionClick(username) }} disabled={loading}>新建问卷</Button>
                     <Divider style={{ borderTop: 'transparent' }} />
                     {/* 根据pathname来动态设置Button的type值 */}
                     {/* 让当前页面所对应的Button按钮样式呈现类似于激活的状态 */}

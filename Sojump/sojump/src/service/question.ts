@@ -20,8 +20,9 @@ export async function getQuestionService(id: string) : Promise<ResponseData> {
 
 // 创建问卷
 // 后端返回一个新问卷的id，根据该id跳转到问卷编辑(新建)页面
-export async function createQuestionService() : Promise<ResponseData> {
-    const data = await instance.post(`/api/question`);
+export async function createQuestionService(username : string) : Promise<ResponseData> {
+    console.log("🚀 ~ file: question.ts:24 ~ createQuestionService ~ username:", username)
+    const data = await instance.post(`/api/question`, {username});
     return data;
 }
 
