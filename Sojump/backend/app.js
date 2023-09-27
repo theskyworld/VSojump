@@ -40,7 +40,7 @@ app.use((req, resp, next) => {
     const authorization = req.headers["authorization"];
     // 用户未登录
     if (!authorization) {
-      return resp.send({
+      return resp.status(507).send({
         errno: 4,
         msg: "用户未登录!",
       });
@@ -54,12 +54,12 @@ app.use((req, resp, next) => {
         .catch(err => {
           // 登录超时
           if (err.message === `jwt expired`) {
-            return resp.send({
+            return resp.status(507).send({
               errno: 4,
               msg: "用户登录超时!",
             });
           } else {
-            return resp.send({
+            return resp.status(507).send({
               errno: 4,
               msg: "用户未登录!",
             });
@@ -102,7 +102,7 @@ app.get("/api/question/:id", (req, resp) => {
     .then(res => {
       if (!res.length) {
         // 返回问卷未找到
-        resp.send({
+        resp.status(507).send({
           errno: 1,
           msg: "问卷未找到!",
         });
@@ -111,10 +111,8 @@ app.get("/api/question/:id", (req, resp) => {
         question.isDeleted = Boolean(question.isDeleted);
         question.isPublished = Boolean(question.isPublished);
         question.isStar = Boolean(question.isStar);
-        question.components = JSON.parse(
-          question.components
-        ) || [];
-        resp.send({
+        question.components = JSON.parse(question.components) || [];
+        resp.status(200).send({
           errno: 0,
           data: {
             id: question.qid,
@@ -124,7 +122,7 @@ app.get("/api/question/:id", (req, resp) => {
       }
     })
     .catch(err => {
-      resp.send({
+      resp.status(507).send({
         errno: 1,
         msg: "问卷未找到!",
       });
@@ -150,21 +148,21 @@ app.post("/api/question", async (req, resp) => {
         await questionDatabase(insertQidSql);
         await questionDatabase(insertComponentsIdSql);
         // 向前端返回qid
-        resp.send({
+        resp.status(200).send({
           errno: 0,
           data: {
             id: qid,
           },
         });
       } else {
-        resp.send({
+        resp.status(507).send({
           errno: 2,
           msg: "不能重复创建问卷!",
         });
       }
     })
     .catch(err => {
-      resp.send({
+      resp.status(507).send({
         errno: 3,
         msg: "创建问卷失败!",
       });
@@ -226,18 +224,18 @@ app.patch("/api/question/:id", async (req, resp) => {
                             `;
         await questionDatabase(sql2);
         // }
-        resp.send({
+        resp.status(200).send({
           errno: 0,
         });
       } else {
-        resp.send({
+        resp.status(507).send({
           errno: 1,
           msg: "问卷未找到!",
         });
       }
     })
     .catch(err => {
-      resp.send({
+      resp.status(507).send({
         errno: 1,
         msg: "修改问卷失败!",
       });
@@ -308,7 +306,7 @@ app.get("/api/question-list", async (req, resp) => {
             }
           });
         }
-        resp.send({
+        resp.status(200).send({
           errno: 0,
           data: {
             list: resComponentList,
@@ -316,7 +314,7 @@ app.get("/api/question-list", async (req, resp) => {
           },
         });
       } else {
-        resp.send({
+        resp.status(200).send({
           errno: 0,
           data: {
             list: [],
@@ -351,21 +349,21 @@ app.post("/api/question/duplicate/:id", (req, resp) => {
         await questionDatabase(insertQidSql);
         await questionDatabase(insertComponentsIdSql);
         // 向前端返回qid
-        resp.send({
+        resp.status(200).send({
           errno: 0,
           data: {
             id: qid,
           },
         });
       } else {
-        resp.send({
+        resp.status(507).send({
           errno: 2,
           msg: "不能重复创建问卷!",
         });
       }
     })
     .catch(err => {
-      resp.send({
+      resp.status(507).send({
         errno: 3,
         msg: "复制问卷失败!",
       });
@@ -394,14 +392,14 @@ app.delete("/api/question", async (req, resp) => {
       questionDatabase(deleteFromQuestionComponentsSql);
       questionDatabase(deleteFromAnswerInfoSql);
     } catch {
-      resp.send({
+      resp.status(507).send({
         erron: 3,
         msg: `删除问卷${id}失败!`,
       });
     }
   });
 
-  resp.send({
+  resp.status(200).send({
     errno: 0,
   });
 });
@@ -411,15 +409,16 @@ app.delete("/api/question", async (req, resp) => {
 // 用户登录
 app.post("/api/user/login", async (req, resp) => {
   const params = req.body;
-  const sqlParam = params.username;
-  const sql = `SELECT * FROM userinfo WHERE uname = '${sqlParam}'`;
-  userinfoDatabase(sql, sqlParam).then(res => {
+  const {username, password } = params;
+  console.log(username, password);
+  const sql = `SELECT * FROM userinfo WHERE uname = '${username}'`;
+  userinfoDatabase(sql, username).then(res => {
     if (res.length) {
       const userinfo = JSON.parse(JSON.stringify(res))[0];
       const { upassword } = userinfo;
-      if (upassword === params.password) {
-        setToken(params.username).then(token => {
-          resp.send({
+      if (upassword === password) {
+        setToken(username).then(token => {
+          resp.status(200).send({
             errno: 0,
             data: {
               token,
@@ -428,37 +427,44 @@ app.post("/api/user/login", async (req, resp) => {
           });
         });
       } else {
-        resp.writeHead(801, "Current password does not match", {
-          "content-type": "text/plain",
+        resp.status(507).send({
+          errno: 1,
+          msg: "密码错误!",
         });
-        resp.end();
       }
     } else {
-      resp.writeHead(801, "username is not found", {
-        "content-type": "text/plain",
+      resp.status(507).send({
+        errno: 1,
+        msg: "用户未注册!",
       });
-      resp.end();
     }
   });
 });
 
 // 用户注册
 app.post("/api/user/register", async (req, resp) => {
+  // 用户注册后，返回当前用户的uid，用于以后在用户登录、获取用户信息、获取用户所有问卷、收藏问卷、已删除的问卷时进行用户的鉴定
+  const uid = Math.random().toString(36).substr(2, 16);
   const params = req.body;
   const sql_find_user = `SELECT id FROM userinfo WHERE uname = '${params.username}'`;
   const sql_add_user = `INSERT INTO userinfo (uname,upassword) VALUES ('${params.username}','${params.password}')`;
+  // 在数据库内存储uid
+  const sql_set_uid = `UPDATE userinfo SET uid = '${uid}' WHERE uname = '${params.username}'`;
 
-  userinfoDatabase(sql_find_user, params.username).then(res => {
+  userinfoDatabase(sql_find_user, params.username).then(async res => {
     if (res.length) {
-      resp.writeHead(801, "username is already exist", {
-        "content-type": "text/plain",
-      });
-      resp.end();
+      resp.status(507).send({
+        errno: 1,
+        msg: "用户已注册!",
+      })
     } else {
-      userinfoDatabase(sql_add_user).then(res => {
-        resp.send({
-          errno: 0,
-        });
+      await userinfoDatabase(sql_add_user);
+      await userinfoDatabase(sql_set_uid);
+      resp.status(200).send({
+        errno: 0,
+        data: {
+          uid,
+        },
       });
     }
   });
@@ -470,15 +476,15 @@ app.get("/api/user/info", async (req, resp) => {
   const sql = `SELECT * FROM userinfo WHERE uname = '${username}'`;
   userinfoDatabase(sql, username).then(res => {
     if (res.length) {
-      resp.send({
+      resp.status(200).send({
         errno: 0,
         data: res[0],
       });
     } else {
-      resp.send({
+      resp.status(507).send({
         errno: 1,
-        msg : '用户未注册!'
-      })
+        msg: "用户未注册!",
+      });
     }
   });
 });
@@ -505,7 +511,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
     .then(res => {
       if (!res.length) {
         // 返回问卷未找到
-        resp.send({
+        resp.status(507).send({
           errno: 1,
           msg: "问卷未找到!",
         });
@@ -514,7 +520,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
         question.isDeleted = Boolean(question.isDeleted);
         question.isPublished = Boolean(question.isPublished);
         if (!question.isPublished) {
-          resp.send({
+          resp.status(507).send({
             errno: 4,
             msg: "当前问卷未发布！",
           });
@@ -523,7 +529,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
         question.components = JSON.parse(
           question.components ? question.components : []
         );
-        resp.send({
+        resp.status(200).send({
           errno: 0,
           data: {
             id: question.qid,
@@ -533,7 +539,7 @@ app.get("/api/answer-question/:id", async (req, resp) => {
       }
     })
     .catch(err => {
-      resp.send({
+      resp.status(507).send({
         errno: 1,
         msg: "问卷未找到!",
       });
@@ -549,7 +555,7 @@ app.post("/api/answer", async (req, resp) => {
     answerList
   )}'))`;
   answerDatabase(sql).then(res => {
-    resp.send({
+    resp.status(200).send({
       errno: 0,
     });
   });
@@ -596,7 +602,7 @@ app.get("/api/stat/:questionId", async (req, resp) => {
         });
       });
 
-      resp.send({
+      resp.status(200).send({
         errno: 0,
         data: {
           list: list,
@@ -604,7 +610,7 @@ app.get("/api/stat/:questionId", async (req, resp) => {
         },
       });
     } else {
-      resp.send({
+      resp.status(200).send({
         errno: 0,
         data: {
           list: list,
@@ -623,7 +629,7 @@ app.get("/api/stat/:questionId/:componentId", async (req, resp) => {
   // 如果未找到组件，则返回组件未找到
   questionDatabase(findQuestionSql).then(res => {
     if (!res.length) {
-      resp.send({
+      resp.status(507).send({
         errno: 1,
         msg: "组件未找到!",
       });
@@ -692,14 +698,14 @@ app.get("/api/stat/:questionId/:componentId", async (req, resp) => {
             });
           });
           // console.log(stat)
-          resp.send({
+          resp.status(200).send({
             errno: 0,
             data: {
               stat,
             },
           });
         } else {
-          resp.send({
+          resp.status(507).send({
             errno: 1,
             msg: "答卷未找到!",
           });
