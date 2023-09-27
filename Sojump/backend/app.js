@@ -260,6 +260,7 @@ app.get("/api/question-list", async (req, resp) => {
   // `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isDeleted = '1`;
 
   const {
+    username = '',
     keyword = "",
     page = 1,
     perPageSize = 10,
@@ -267,9 +268,10 @@ app.get("/api/question-list", async (req, resp) => {
     isDeleted = 0,
   } = req.query;
 
-  const allQuestionListSql = `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isDeleted = '0'`;
-  const starQuestionListSql = `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isStar = '1' AND isDeleted = '0'`;
-  const trashQuestionListSql = `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isDeleted = '1'`;
+  // 获取问卷时携带username，获取当前用户下的问卷
+  const allQuestionListSql = `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isDeleted = '0' AND uname = '${username}'`;
+  const starQuestionListSql = `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isStar = '1' AND isDeleted = '0' AND uname = '${username}'`;
+  const trashQuestionListSql = `SELECT * FROM question_info WHERE title LIKE '%${keyword}%' AND isDeleted = '1' AND uname = '${username}'`;
 
   let finalSql;
   if (!isStar && !isDeleted) {

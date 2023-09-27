@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { useDebounceFn, useRequest, useTitle } from "ahooks";
 import { Empty, Spin, Typography } from "antd";
 import Search from "../../components/Search";
-import { SEARCH_PARAM_KEY } from "../../assets/ts/constants";
+import { SEARCH_PARAM_KEY, USERNAME_KEY } from "../../assets/ts/constants";
 import { getQuestionListService } from "../../service/question";
 import useSearchQuestionList from "../../hooks/useSearchQuestionList";
 import CommonPagination from "../../components/CommonPagination";
@@ -91,7 +91,9 @@ const List: FC = () => {
 
   const { run : loadMore, loading } = useRequest(
     async () => {
+      const username = JSON.parse(localStorage.getItem(USERNAME_KEY)!).username;
       const data = await getQuestionListService({
+        username,
         page: curPage,
         perPageSize: DEFAULT_PER_PAGE_SIZE,
         keyword 

@@ -1,4 +1,4 @@
-import { DEFAULT_PER_PAGE_SIZE, PER_PAGE_SIZE_PARM_KEY } from './../assets/ts/constants';
+import { DEFAULT_PER_PAGE_SIZE, PER_PAGE_SIZE_PARM_KEY, USERNAME_KEY } from './../assets/ts/constants';
 /**
  * @author tsw
  * @copyright 2023
@@ -22,10 +22,11 @@ export default function useSearchQuestionList(option?: Partial<UseSearchQuestion
 
     const { data, loading, error, refresh } = useRequest(
         async () => {
+            const username = JSON.parse(localStorage.getItem(USERNAME_KEY)!).username;
             const keyword = searchParams.get(SEARCH_PARAM_KEY) || '';
             const page = parseInt(searchParams.get(PAGE_PARM_KEY) || "") || 1;
             const perPageSize = parseInt(searchParams.get(PER_PAGE_SIZE_PARM_KEY) || "") || DEFAULT_PER_PAGE_SIZE; 
-            const data = await getQuestionListService({ keyword, isStar, isDeleted, page, perPageSize });
+            const data = await getQuestionListService({username, keyword, isStar, isDeleted, page, perPageSize });
             return data;
         }, {
             refreshDeps: [searchParams], // useRequest执行的依赖，依赖值变化时重新执行

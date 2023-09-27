@@ -2,6 +2,7 @@ import instance from "./base";
 import { ResponseData } from "./base";
 
 interface SearchOption {
+    username: string;
     keyword: string;
     isStar?: boolean;
     isDeleted?: boolean;
