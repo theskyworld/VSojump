@@ -25,6 +25,9 @@ const Login: FC = () => {
             onSuccess(result) {
                 // 存储token
                 const { token = "" } = result;
+                const { uname, upassword } = result.userinfo;
+                // 存储用户信息
+                rememberUser(uname, upassword);
                 setToken(token);
                 message.success("登录成功");
                 nav(MANAGE_LIST_URL);
