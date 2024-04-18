@@ -4,16 +4,19 @@
 
 import { useSelector } from "react-redux";
 import { State } from "../store";
-import { ComponentsReducerState } from './../store/componentsReducer/index';
- 
+import { ComponentsReducerState } from "./../store/componentsReducer/index";
+
 function useGetComponentInfo() {
-    const components = (useSelector<State>(state => state.components) as ComponentsReducerState).components;
-    const { selectedId, copiedComponent } = useSelector<State>(state => state.components) as ComponentsReducerState;
-    
-    const selectedComponent = components.find(c => c.fe_id === selectedId);
+  // const components = (useSelector<State>(state => state.components.present) as ComponentsReducerState).components;
+  const beforeComponents = useSelector<State>(
+    state => state.components.present
+  ) as ComponentsReducerState;
+  const { components = [], selectedId, copiedComponent } = beforeComponents;
+  // const { selectedId, copiedComponent } = useSelector<State>(state => state.components) as ComponentsReducerState;
 
-    return {components, selectedId, selectedComponent, copiedComponent};
+  const selectedComponent = components.find(c => c.fe_id === selectedId);
 
+  return { components, selectedId, selectedComponent, copiedComponent };
 }
 
 export default useGetComponentInfo;
