@@ -2,11 +2,13 @@ import { UserAddOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { Typography, Space, Form, Input, Button, Checkbox, message } from "antd";
 import React, { FC, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_URL, MANAGE_LIST_URL, PASSWORD_KEY, REGISTER_URL, USERNAME_KEY } from "../assets/ts/constants";
 import getUserFromLocalStorage from "../assets/utils/getUserFromLocalStorage";
 import { setToken } from "../assets/utils/userToken";
 import { loginUserService } from "../service/user";
+import { changeIsLogined } from "../store/UserReducer";
 import styles from "./Register.module.scss";
 
 
@@ -17,11 +19,11 @@ const Login: FC = () => {
     const [form] = Form.useForm();
 
 
-    const {loading : loginLoading, run } = useRequest(
+    const { loading: loginLoading, run } = useRequest(
         async (username, password) => loginUserService(username, password),
         {
             manual: true,
-            debounceWait : 500,
+            debounceWait: 500,
             onSuccess(result) {
                 // 存储token
                 const { token = "" } = result;
@@ -31,11 +33,12 @@ const Login: FC = () => {
                 setToken(token);
                 message.success("登录成功");
                 nav(MANAGE_LIST_URL);
+                dispatch(changeIsLogined(true));
             }
         }
     )
 
-
+    const dispatch = useDispatch();
     useEffect(() => {
         const { username, password } = getUserFromLocalStorage() || { username: "", password: "" };
         // 用于在初始化页面或者重新刷新时，如果remember值为true，自动在username和password中填充已保存的值

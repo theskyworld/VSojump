@@ -2,18 +2,27 @@ import { UserOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { Button } from "antd";
 import React, { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_URL } from "../assets/ts/constants";
 import getUserFromLocalStorage from "../assets/utils/getUserFromLocalStorage";
 import { removeToken, getToken } from "../assets/utils/userToken";
 import { getUserInfoService } from "../service/user";
+import { State } from "../store";
+import { changeIsLogined } from "../store/UserReducer";
 
 
 
 const UserInfo: FC = () => {
+    const dispatch = useDispatch();
+
     const username_ = (getUserFromLocalStorage() || { username: "", password: "" }).username;
 
-    const [isLogined, setIsLogined] = useState(false);
+    // const [isLogined, setIsLogined] = useState(false);
+    const isLogined = useSelector((state: State) => state.user.isLogined);
+    function setIsLogined(value: boolean) {
+        dispatch(changeIsLogined(value));
+    }
     const nav = useNavigate();
 
 
@@ -41,7 +50,7 @@ const UserInfo: FC = () => {
             <>
                 <span style={{ color: "#e8e8e8" }}>
                     <UserOutlined />
-                    {username}
+                    {username_}
                 </span>
                 <Button type="link" onClick={logout}>退出登录</Button>
             </>
