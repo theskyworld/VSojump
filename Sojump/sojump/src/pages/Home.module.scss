@@ -1,16 +1,32 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 64px - 65px);
-    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-    .info {
-        text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 64px - 65px);
+  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  .bg {
+    position: absolute;
+    z-index: 1;
+  }
+  .info {
+    z-index: 10;
 
-        button {
-            height: 60px;
-            font-size: 24px;
-        }
+    text-align: center;
+    button {
+      height: 60px;
+      font-size: 24px;
+      background: linear-gradient(
+        60deg,
+        rgba(84, 58, 183, 1) 0%,
+        rgba(0, 172, 193, 1) 100%
+      );
+      border: 3px solid hsl(185, 53%, 60%);
+      border-radius: 100vw;
+
+      &:hover {
+        background: rgba(0, 172, 193, 1) !important;
+      }
     }
+  }
 }
