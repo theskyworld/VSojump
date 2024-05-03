@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Typography } from "antd";
-import { MANAGE_LIST_URL } from "../assets/ts/constants";
+import { MANAGE_LIST_URL, USERNAME_KEY } from "../assets/ts/constants";
 import styles from "./Home.module.scss";
 
 
@@ -10,6 +10,11 @@ const { Title, Paragraph } = Typography;
 
 const Home: FC = () => {
     const nav = useNavigate();
+    useEffect(() => {
+        if (!localStorage.getItem(USERNAME_KEY)) {
+            localStorage.setItem(USERNAME_KEY, JSON.stringify({username:"",password:""}));
+        }
+    },[])
 
     return (
         <div className={styles.container}>
