@@ -16,7 +16,7 @@ const Trash: FC = () => {
     const { Title } = Typography;
     const { confirm } = Modal;
     const [isLoading, setIsLoading] = useState(true);
-    useTitle("V问卷-回收站");
+    useTitle("智慧问卷-回收站");
 
     const { data, loading, error, refresh } = useSearchQuestionList({ isDeleted: true });
     const { list, total } = data || {};

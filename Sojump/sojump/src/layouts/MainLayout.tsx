@@ -18,7 +18,7 @@ const MainLayout: FC = () => {
                 {/* 类似于vue中的slot,RouterView */}
                 <Outlet></Outlet>
             </Content>
-            <Footer className={styles.footer}>V问卷 &copy;2023 - now. Created by tsw</Footer>
+            <Footer className={styles.footer}>智慧问卷 &copy;2023 - now. Created by tsw</Footer>
         </Layout>
 
     )

@@ -27,7 +27,7 @@ export interface Question {
 
 const List: FC = () => {
   // 在不同页面中使用useTitle来修改不同页面对应的标题
-  useTitle("V问卷-我的问卷")
+  useTitle("智慧问卷-我的问卷")
   const { Title } = Typography;
   const [searchParams] = useSearchParams();
   const loadMoreContainerRef = useRef<HTMLDivElement>(null);

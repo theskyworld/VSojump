@@ -14,8 +14,7 @@ const Logo: FC = () => {
             <Link to="/">
                 <Space>
                     {/* Title的level属性可以指定级别，默认值为1，等价于h1 */}
-                    <img width="30px" height="30px" src="/logo.jpg" alt="" />
-                    <Title className={styles.text}>创意智库</Title>
+                    <Title className={styles.text}>智慧问卷</Title>
                 </Space>
             </Link>
         </div>

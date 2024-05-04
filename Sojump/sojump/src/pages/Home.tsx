@@ -23,7 +23,7 @@ const Home: FC = () => {
                 <Background />
             </div>
             <div className={styles.info}>
-                <Title>创意工厂|快速创建问卷</Title>
+                <Title>智慧问卷|快速创建问卷</Title>
                 <Paragraph>已累计创建问卷100份，发布问卷50份，收到答卷100份</Paragraph>
                 <div>
                     <Button type="primary" onClick={() => nav(MANAGE_LIST_URL)}>开始使用</Button>

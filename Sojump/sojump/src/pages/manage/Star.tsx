@@ -13,7 +13,7 @@ const Star: FC = () => {
     const [questionList, setQuestionList] = useState<Question[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { Title } = Typography;
-    useTitle("V问卷-星标问卷");
+    useTitle("智慧问卷-星标问卷");
 
     const { data, loading, error, refresh } = useSearchQuestionList({ isStar: true });
     const { list, total } = data || {};
