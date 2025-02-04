@@ -1,7 +1,5 @@
 import { message } from "antd";
 import axios from "axios";
-import { redirect, useNavigate } from "react-router-dom";
-import { promiseHooks } from "v8";
 import { LOGIN_URL } from "../assets/ts/constants";
 import { getToken } from "../assets/utils/userToken";
 
@@ -15,6 +13,7 @@ export interface ResponseData {
 }
 
 const instance = axios.create({
+  baseURL: "https://api.vsojump.site",
   timeout: 10 * 1000,
 });
 
