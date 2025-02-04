@@ -1,6 +1,6 @@
 import { message } from "antd";
 import axios from "axios";
-import { LOGIN_URL } from "../assets/ts/constants";
+import { BASE_URL, LOGIN_URL } from "../assets/ts/constants";
 import { getToken } from "../assets/utils/userToken";
 
 export interface Response {
@@ -13,7 +13,7 @@ export interface ResponseData {
 }
 
 const instance = axios.create({
-  baseURL: "https://api.vsojump.site",
+  baseURL: BASE_URL,
   timeout: 10 * 1000,
 });
 

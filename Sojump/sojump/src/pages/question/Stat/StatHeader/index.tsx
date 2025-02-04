@@ -1,9 +1,10 @@
-import React, { FC, useRef, useMemo } from 'react'
-import { Space, Button, Typography, Input, Tooltip, message, Popover } from 'antd'
+import { CopyOutlined, LeftOutlined, QrcodeOutlined } from '@ant-design/icons'
 import type { InputRef } from 'antd'
-import { LeftOutlined, CopyOutlined, QrcodeOutlined } from '@ant-design/icons'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Button, Input, message, Popover, Space, Tooltip, Typography } from 'antd'
 import QRCode from 'qrcode.react'
+import { FC, useMemo, useRef } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { BASE_URL } from '../../../../assets/ts/constants'
 import useGetPageSetting from '../../../../hooks/useGetPageSetting'
 import styles from './StatHeader.module.scss'
 
@@ -32,7 +33,7 @@ const StatHeader: FC = () => {
         if (!isPublished) return null
 
         // 拼接 url ，需要参考 C 端的规则
-        const url = `http://localhost:3005/question/${id}`
+        const url = `${BASE_URL}/question/${id}`
 
         // 定义二维码组件
         // url值得图形化

@@ -1,5 +1,5 @@
 
-const HOST = 'http://localhost:5003' // Mock 的 host
+const HOST = "https://api.vsojump.site"; // Mock 的 host
 
 export async function get(url: string) {
   const res = await fetch(`${HOST}${url}`)
