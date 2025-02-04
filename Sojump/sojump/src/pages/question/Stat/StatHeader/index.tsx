@@ -4,7 +4,6 @@ import { Button, Input, message, Popover, Space, Tooltip, Typography } from 'ant
 import QRCode from 'qrcode.react'
 import { FC, useMemo, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { BASE_URL } from '../../../../assets/ts/constants'
 import useGetPageSetting from '../../../../hooks/useGetPageSetting'
 import styles from './StatHeader.module.scss'
 
@@ -33,7 +32,7 @@ const StatHeader: FC = () => {
         if (!isPublished) return null
 
         // 拼接 url ，需要参考 C 端的规则
-        const url = `${BASE_URL}/question/${id}`
+        const url = `https://client.vsojump.site/question/${id}`
 
         // 定义二维码组件
         // url值得图形化
