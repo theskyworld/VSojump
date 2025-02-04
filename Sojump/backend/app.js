@@ -1,9 +1,12 @@
 const express = require("express");
 const { database } = require("./src/database");
 const { setToken, verifyToken } = require("./src/token");
+const cors = require("cors");
+
 
 const app = express();
 const port = 5003;
+
 
 // 操作sql_sojump_userinfo数据库
 const userinfoDatabase = database[0];
@@ -19,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(bodyParser.text());
+app.use(cors());
 
 // 统一校验token，在例如获取用户信息时使用
 app.use((req, resp, next) => {
